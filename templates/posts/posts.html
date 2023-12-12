@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load colaborador_tags %}
+
+{% block contenido %}
+<center>
+<div class="container-fluid" style="margin: 200px;">
+
+{% if user.is_superuser or request.user|has_group:"Colaborador" %}
+    <div class="container-fluid" style="margin-top: 300px;">
+        <a id="boton_post" href="{% url 'apps.posts:crear_post' %}">Crear nuevo post</a>
+    </div >
+{% endif %}
+
+
+<h2>Ordener por:</h2>
+<ul>
+    <a id="boton_post" href="{% url 'apps.posts:posts' %}?orden-reciente">Más reciente</a>
+    <a id="boton_post" href="{% url 'apps.posts:posts' %}?orden-antiguo">Más antiguo</a>
+    <a id="boton_post" href="{% url 'apps.posts:posts' %}?orden-alfabetico">Orden alfabético</a>
+</ul>
+
+<div class="container-fluid" style="margin: 200px;">
+    <div class="row">
+
+        {% for i in posts %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ i.imagen.url }}" alt="{{ i.titulo }}" class="card-img-top">
+                <div class="card-body"> class="<button
+                    class="btn btn-primary position-relative">
+                    Posts
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        Data
+                        <span class="visually-hidden">TEC</span>
+                    </span>
+                </button>
+   
+                    <h5 class="card-title">{{ i.titulo }}</h5>
+                    <p class="card-text">{{ i.subtitulo }}</p>
+                    <p class="card-text">{{ i.categoria }}</p>
+                    <a href="{% url 'apps.posts:post_individual' i.id %}" class="btn btn-primary">Ingresa a este Post</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{% static 'upload/michi.jpg' %}" alt="No hay registros" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">No hay registros</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+</div>
+
+</center>
+{% endblock %}
